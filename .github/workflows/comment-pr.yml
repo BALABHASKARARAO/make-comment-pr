@@ -1,23 +1,15 @@
-name: Close All Pull Requests
+name: comment on pullrequest
 on:
   pull_request:
     types:
       - opened
 jobs:
-  comment:
-    if: contains(github.event.comment.body, '')
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Add comment to PR
-        env:
-          URL: ${{ github.event.issue.comments_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          curl \
-            -X POST \
-            $URL \
-            -H "Content-Type: application/json" \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            --data '{ "body": "blah blah" }'
+   runs-on: ubuntu-latest
+   steps:
+     - name: Comment PR
+       if: github.event_name == 'pull_request'
+       with:
+         github-token: ${{ secrets.GITHUB_TOKEN }}
+         script: |
+           const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+           github.issues.createComment({ issue_number, owner, repo, body: 'Hello world ! 👋' });
