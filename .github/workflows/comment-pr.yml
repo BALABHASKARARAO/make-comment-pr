@@ -8,7 +8,7 @@ jobs:
         id: check-description
         #uses: actions/checkout@v1
         uses: nouzbe/check-pull-request-description@v1.11
-        #continue-on-error: true
+        continue-on-error: true
         
       - name: An example job to comment a PR
         if: ${{ failure() }}
